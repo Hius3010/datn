@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const { URI, PORT, SECRET_ACCESS_TOKEN } = process.env;
+const { URI, PORT, SECRET_ACCESS_TOKEN, LOG_FILE_PATH, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID} = process.env;
 
-export { URI, PORT, SECRET_ACCESS_TOKEN };
+export { URI, PORT, SECRET_ACCESS_TOKEN, LOG_FILE_PATH, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID};

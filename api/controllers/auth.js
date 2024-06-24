@@ -1,8 +1,7 @@
-// controllers/auth.js
 import bcrypt from "bcrypt"
 import User from  "../models/User.js"
 
-// Hàm để đăng ký người dùng mới
+// Dang ki nguoi dung moi
 export async function registerUser(req, res) {
   const { username, password, acls } = req.body;
   try {
@@ -35,13 +34,12 @@ export async function registerUser(req, res) {
     res.end();
 }
 
-// Hàm để xác thực người dùng với username và password
+// Authen user
 export async function Login(req, res) {
-    // Get variables for the login process
     const { username } = req.body;
     console.log(req.body)
     try {
-        // Check if user exists
+        // Kiem tra nguoi dung ton tai
         const user = await User.findOne({ username }).select("+password");
         if (!user)
             return res.status(401).json({
@@ -49,20 +47,16 @@ export async function Login(req, res) {
                 message:
                     "Invalid email or password. Please try again with the correct credentials.",
             });
-        // if user exists
-        // validate password
         const isPasswordValid = await bcrypt.compare(
             `${req.body.password}`,
             user.password
         );
-        // if not valid, return unathorized response
         if (!isPasswordValid)
             return res.status(401).json({
                 ok: false,
                 message:
                     "Invalid email or password. Please try again with the correct credentials.",
             });
-        // return user info except password
         const { password, ...user_data } = user._doc;
 
         res.status(200).json({
@@ -73,7 +67,6 @@ export async function Login(req, res) {
         res.status(500).json({
             status: "error",
             code: 500,
-            data: [],
             message: "Internal Server Error",
         });
     }
@@ -81,7 +74,7 @@ export async function Login(req, res) {
     res.end();
 }
 
-// Hàm để xác thực acls với đúng topic và acc của topic đó
+// Check acl func
 export async function checkACL(req, res) {
   const { username, topic, acc } = req.body;
   console.log(req.body)

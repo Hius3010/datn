@@ -1,0 +1,39 @@
+version: '3.0'
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: datn_mongodb
+    restart: unless-stopped
+    command: "mongod --auth --bind_ip_all"
+    ports:
+     - 27018:27017
+    environment:
+     - MONGO_INITDB_ROOT_USERNAME=admin
+     - MONGO_INITDB_ROOT_PASSWORD=admin
+     - MONGO_INITDB_DATABASE=test
+    volumes:
+      - /home/hius/datn/mongodb/data:/data/db
+    networks:
+      - datnet
+
+  backend:
+    build: .
+    container_name: datn_backend
+    restart: unless-stopped
+    command: "npm run start"
+    volumes:
+      - /home/hius/var/log/mosquitto:/var/log/mosquitto
+    ports:
+      - 8888:8888
+    depends_on:
+      - mongodb
+    env_file:
+      - .env
+    environment:
+      - URI=mongodb://admin:admin@mongodb:27017/mosquitto?authSource=admin
+    networks:
+      - datnet
+
+networks:
+  datnet:
+    driver: bridge
