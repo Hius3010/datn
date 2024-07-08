@@ -21,10 +21,12 @@
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.3",
+    "mqtt": "^5.7.2",
     "node-telegram-bot-api": "^0.66.0",
     "telegraf": "^4.16.3"
   },
   "devDependencies": {
+    "autocannon": "^7.15.0",
     "nodemon": "^3.1.4"
   }
 }
